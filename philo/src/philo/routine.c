@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:14:20 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/09 17:48:55 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 22:02:37 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 void	wait_philo(t_philo *philo, int ms)
 {
-	(void)philo;
 	struct timeval	now;
 	struct timeval	wait;
 
@@ -31,7 +30,7 @@ void	wait_philo(t_philo *philo, int ms)
 	}
 }
 
-int	check_if_end(t_philo *philo)
+int check_if_end(t_philo *philo)
 {
 	pthread_mutex_lock(philo->state_mutex);
 	if (*philo->state == 0)
@@ -86,15 +85,6 @@ int	philo_check_death(t_philo *philo, int subms)
 	return (0);
 }
 
-void DEBUG_print_time(struct timeval last)
-{
-  struct timeval act;
-
-  gettimeofday(&act, NULL);
-  printf("time to execute: %li ms\n", (long int)diff_timeval(last, act));
-  
-}
-
 int	philo_eat(t_philo *philo)
 {
   if (philo->left_fork == NULL || philo->right_fork == NULL)
@@ -108,6 +98,8 @@ int	philo_eat(t_philo *philo)
 	if (philo_check_death(philo, 0) == -1)
     return (-1);
   pthread_mutex_lock(philo->right_fork);
+	if (philo_check_death(philo, 0) == -1)
+    return (-1);
 	gettimeofday(&philo->last_eat, NULL);
 	print_action("is eating", philo);
 	wait_philo(philo, philo->time2eat);
@@ -137,7 +129,7 @@ void	*philo_routine(void *ptr)
 		if (check_if_end(philo))
 			break ;
 		print_action("is thinking", philo);
-		philo_check_death(philo, philo->time2eat - philo->time2sleep);
+		philo_check_death(philo, (philo->time2eat - philo->time2sleep));
 		if (check_if_end(philo))
 			break ;
 	}

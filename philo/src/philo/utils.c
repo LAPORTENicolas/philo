@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 02:11:58 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/09 15:45:44 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 21:47:27 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	printt(t_philo *philo, char *str, char *str1)
   str2 = ft_itoa(time);
   ft_printf("%s %s %s\n", str2, str1, str);
 	pthread_mutex_unlock(philo->print_mutex);
+  if (str2)
+    free(str2);
 }
 
 void	print_action(char *str, t_philo *philo)
@@ -41,6 +43,7 @@ void	print_action(char *str, t_philo *philo)
 	if (*philo->state)
 	  printt(philo, str, str1);
 	pthread_mutex_unlock(philo->state_mutex);
+  free(str1);
 }
 
 void	print_dead(char *str, t_philo *philo)
@@ -58,4 +61,8 @@ void	print_dead(char *str, t_philo *philo)
   str2 = ft_itoa(time);
   ft_printf("%s %s %s\n", str2, str3, str);
 	pthread_mutex_unlock(philo->print_mutex);
+  if (str3)
+    free(str3);
+  if (str2)
+    free(str2);
 }

@@ -26,6 +26,11 @@ void	free_env(t_env *env)
 	free(env->philo);
 }
 
+void	test(void)
+{
+	return ;
+}
+
 int	main(int ac, char **av)
 {
 	t_env	env;
@@ -33,7 +38,7 @@ int	main(int ac, char **av)
 	if (ac <= 4)
 		return (-1);
 	if (get_env(ac, av, &env) == -1)
-    return (-1);
+		return (-1);
 	launch_philo(&env);
 	free_env(&env);
 	return (0);
