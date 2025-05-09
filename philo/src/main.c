@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:00:12 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/08 23:43:16 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:19:39 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	main(int ac, char **av)
 
 	if (ac <= 4)
 		return (-1);
-	env = get_env(ac, av);
+	if (get_env(ac, av, &env) == -1)
+    return (-1);
 	launch_philo(&env);
 	free_env(&env);
 	return (0);

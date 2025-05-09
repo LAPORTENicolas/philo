@@ -6,35 +6,56 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 02:11:58 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/09 00:03:21 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:45:44 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philosophers.h"
 #include <pthread.h>
 
-void	printt(t_philo *philo, char *str)
+void DEBUG_print_time(struct timeval last);
+
+void	printt(t_philo *philo, char *str, char *str1)
 {
-	struct timeval	now;
+  struct timeval now;
 	int	time;
+  char *str2;
 
 	pthread_mutex_lock(philo->print_mutex);
 	gettimeofday(&now, NULL);
 	time = (now.tv_sec - philo->start_time.tv_sec) * 1000;
 	time += (now.tv_usec - philo->start_time.tv_usec) / 1000;
-  ft_printf("%i %i %s\n", time, philo->id, str);
+  str2 = ft_itoa(time);
+  ft_printf("%s %s %s\n", str2, str1, str);
 	pthread_mutex_unlock(philo->print_mutex);
 }
 
 void	print_action(char *str, t_philo *philo)
 {
-	pthread_mutex_lock(philo->state_mutex);
+  char *str1;
+
+  str1 = ft_itoa(philo->id);
+  if (!str1)
+    return;
+  pthread_mutex_lock(philo->state_mutex);
 	if (*philo->state)
-		printt(philo, str);
+	  printt(philo, str, str1);
 	pthread_mutex_unlock(philo->state_mutex);
 }
 
 void	print_dead(char *str, t_philo *philo)
 {
-	printt(philo, str);
+	struct timeval	now;
+	int	time;
+  char *str2;
+  char *str3;
+
+  str3 = ft_itoa(philo->id);
+	pthread_mutex_lock(philo->print_mutex);
+	gettimeofday(&now, NULL);
+	time = (now.tv_sec - philo->start_time.tv_sec) * 1000;
+	time += (now.tv_usec - philo->start_time.tv_usec) / 1000;
+  str2 = ft_itoa(time);
+  ft_printf("%s %s %s\n", str2, str3, str);
+	pthread_mutex_unlock(philo->print_mutex);
 }

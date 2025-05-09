@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:14:20 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/08 23:07:05 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 17:48:55 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ long diff_timeval(struct timeval start, struct timeval end)
 {
 	long diff_sec = end.tv_sec - start.tv_sec;
 	long diff_usec = end.tv_usec - start.tv_usec;
-	return diff_sec * 1000 + (diff_usec / 1000);
+	return (diff_sec * 1000000 + diff_usec);
 }
 
 int	philo_check_death(t_philo *philo, int subms)
@@ -86,6 +86,15 @@ int	philo_check_death(t_philo *philo, int subms)
 	return (0);
 }
 
+void DEBUG_print_time(struct timeval last)
+{
+  struct timeval act;
+
+  gettimeofday(&act, NULL);
+  printf("time to execute: %li ms\n", (long int)diff_timeval(last, act));
+  
+}
+
 int	philo_eat(t_philo *philo)
 {
   if (philo->left_fork == NULL || philo->right_fork == NULL)
@@ -94,20 +103,11 @@ int	philo_eat(t_philo *philo)
     philo_check_death(philo, philo->time2die);
     return (-1);
   }
-	if (philo->left_fork > philo->right_fork)
-	{
-		pthread_mutex_lock(philo->right_fork);
-	  print_action("has taken a fork", philo);
-		pthread_mutex_lock(philo->left_fork);
-	}
-	else
-	{
-		pthread_mutex_lock(philo->left_fork);
-	  print_action("has taken a fork", philo);
-		pthread_mutex_lock(philo->right_fork);
-	}
+  pthread_mutex_lock(philo->left_fork);
+  print_action("has taken a fork", philo);
 	if (philo_check_death(philo, 0) == -1)
     return (-1);
+  pthread_mutex_lock(philo->right_fork);
 	gettimeofday(&philo->last_eat, NULL);
 	print_action("is eating", philo);
 	wait_philo(philo, philo->time2eat);

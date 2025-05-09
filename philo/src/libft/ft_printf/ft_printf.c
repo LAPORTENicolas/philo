@@ -6,11 +6,12 @@
 /*   By: nlaporte <nlaporte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 01:50:39 by nlaporte          #+#    #+#             */
-/*   Updated: 2024/11/15 01:50:39 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 15:31:33 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
+#include <unistd.h>
 #include "ft_printf.h"
 
 static unsigned int	ft_strlen(const char *s)
@@ -54,6 +55,16 @@ int	ft_parse(const char *format, unsigned int len, va_list args)
 	return (size);
 }
 
+unsigned int  get_amount_write(const char *str)
+{
+  unsigned int i;
+
+  i = 0;
+  while (str[i] && str[i] != '%')
+    i++;
+  return (i);
+}
+
 int	ft_printf(const char *format, ...)
 {
 	va_list				args;
@@ -69,10 +80,16 @@ int	ft_printf(const char *format, ...)
 	while (len < lenmax)
 	{
 		if (format[len] != '%')
-			size += ft_putchar_fd(format[len], 1);
+    {
+      size += get_amount_write(&format[len]);
+      write(1, &format[len], get_amount_write(&format[len]));
+      len += get_amount_write(&format[len]);
+    }
 		else
+    {
 			size += ft_parse(format, ++len, args);
-		len++;
+      len++;
+    }
 	}
 	return (size);
 }

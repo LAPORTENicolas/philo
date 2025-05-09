@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:14:48 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/08 21:06:51 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 11:18:39 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "philo_struct.h"
 
 // init
-t_env	get_env(int ac, char **av);
+int	get_env(int ac, char **av, t_env *env);
 void	free_env(t_env *env);
 void	launch_philo(t_env *env);
 

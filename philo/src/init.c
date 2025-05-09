@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 17:17:48 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/05/08 23:39:54 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/09 12:57:25 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,40 @@ void	launch_philo(t_env *env)
 		env->philo[i].self = (void *)&env->philo[i];
 		if (pthread_create(&env->philo[i].thread, NULL, philo_routine, env->philo[i].self) != 0)
       abort_philo(env, i);
-    usleep(50);
+    usleep(20);
 		i++;
 	}
 }
 
+int	get_env(int ac, char **av, t_env *env)
+{
+	env->philo_amount = ft_atoi(av[1]);
+	env->time2die = ft_atoi(av[2]);
+	env->time2eat = ft_atoi(av[3]);
+	env->time2sleep = ft_atoi(av[4]);
+  if (env->time2die < 0 || env->time2eat < 0 || \
+    env->time2sleep < 0 || env->philo_amount < 0)
+    return(-1);
+	env->gen = -1;
+	if (ac >= 6)
+		env->gen = ft_atoi(av[5]);
+	env->state = 1;
+	env->mutex_fork = malloc(sizeof(pthread_mutex_t) * env->philo_amount);
+  if (!env->mutex_fork)
+    return(-1);
+	env->philo = malloc(sizeof(t_philo) * env->philo_amount);
+  if (!env->philo)
+  {
+    free(env->mutex_fork);
+    return(-1);
+  }
+	pthread_mutex_init(&env->print_mutex, NULL);
+	pthread_mutex_init(&env->state_mutex, NULL);
+  prepare_philo(env);
+	return (0);
+}
+
+/*
 t_env	get_env(int ac, char **av)
 {
 	t_env	env;
@@ -122,4 +151,4 @@ t_env	get_env(int ac, char **av)
 	prepare_philo(&env);
 	return (env);
 }
-
+*/
