@@ -4,7 +4,7 @@ SOURCES			= src/main.c src/init.c src/time_utils.c \
 OBJECTS     = ${SOURCES:.c=.o}
 NAME        = philo
 CC          = clang
-FLAGS       = -Wall -Werror -Wextra -pthread -O2 
+FLAGS       = -Wall -Werror -Wextra -pthread -g 
 GREEN				= \033[92m
 BLUE				= \033[94m
 ORANGE			= \033[93m

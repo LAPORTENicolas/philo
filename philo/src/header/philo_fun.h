@@ -6,7 +6,7 @@
 /*   By: nlaporte <nlaporte@student.42>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 01:14:48 by nlaporte          #+#    #+#             */
-/*   Updated: 2025/04/15 02:17:32 by nlaporte         ###   ########.fr       */
+/*   Updated: 2025/05/08 21:06:51 by nlaporte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*philo_routine(void *ptr);
 void	print_action(char *color, t_philo *philo);
 void	print_dead(char *str, t_philo *philo);
 int		check_if_end(t_philo *philo);
-int		philo_check_death(t_philo *philo);
+int		philo_check_death(t_philo *philo, int subms);
 
 // time
 struct timeval	time_add(struct timeval time, int sec, int ms);
