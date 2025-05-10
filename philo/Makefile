@@ -1,6 +1,6 @@
 # LIBFT
 SOURCES			= src/main.c src/init.c src/time_utils.c \
-							src/philo/routine.c src/philo/utils.c
+					src/philo/routine.c src/philo/utils.c src/philo/dead.c
 OBJECTS     = ${SOURCES:.c=.o}
 NAME        = philo
 CC          = clang

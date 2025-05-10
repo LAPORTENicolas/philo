@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "header/philosophers.h"
-#include <sys/time.h>
 
 struct timeval	time_add(struct timeval time, int sec, int ms)
 {
@@ -42,7 +41,7 @@ int	check_time_val(struct timeval a, struct timeval b)
 
 int	check_time_val2(struct timeval a, int ms)
 {
-	struct timeval b;
+	struct timeval	b;
 
 	gettimeofday(&b, NULL);
 	b = time_add(b, 0, ms);

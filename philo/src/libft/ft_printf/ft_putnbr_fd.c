@@ -22,19 +22,19 @@ static int	ft_print(unsigned int n, int fd)
 
 int	ft_putnbr_fd(int n, int fd)
 {
-  char str[20];
-  int i;
+	char	str[20];
+	int		i;
 
-  i = 0;
-  while (n > 0 && n <= INT_MAX)
-  {
-    str[i++] = n % 10 + '0';
-    n = n / 10;
-  }
-  if (n == 0)
-    str[i] = '0';
-  ft_putstr_fd(str, fd);
-  return (i);
+	i = 0;
+	while (n > 0 && n <= INT_MAX)
+	{
+		str[i++] = n % 10 + '0';
+		n = n / 10;
+	}
+	if (n == 0)
+		str[i] = '0';
+	ft_putstr_fd(str, fd);
+	return (i);
 }
 
 int	ft_putunbr_fd(unsigned int n, int fd)

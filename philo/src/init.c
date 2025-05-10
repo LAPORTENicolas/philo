@@ -36,8 +36,8 @@ void	prepare_philo(t_env *env)
 	i = 0;
 	while (i < env->philo_amount)
 		pthread_mutex_init(&env->mutex_fork[i++], NULL);
-	i = 0;
-	while (i < env->philo_amount)
+	i = -1;
+	while (++i < env->philo_amount)
 	{
 		env->philo[i].id = i + 1;
 		env->philo[i].time2die = env->time2die;
@@ -45,6 +45,7 @@ void	prepare_philo(t_env *env)
 		env->philo[i].time2sleep = env->time2sleep;
 		env->philo[i].state = &env->state;
 		env->philo[i].left_fork = &env->mutex_fork[i];
+		env->philo[i].take_fork = &env->take_fork;
 		env->philo[i].print_mutex = &env->print_mutex;
 		env->philo[i].state_mutex = &env->state_mutex;
 		env->philo[i].gen = env->gen;
@@ -55,7 +56,6 @@ void	prepare_philo(t_env *env)
 		else
 			env->philo[i].right_fork = &env->mutex_fork[0];
 		env->philo[i].self = (void *)&env->philo[i];
-		i++;
 	}
 }
 
@@ -71,10 +71,9 @@ void	abort_philo(t_env *env, int thread_amount)
 	}
 	free(env->mutex_fork);
 	free(env->philo);
-	exit(EXIT_FAILURE);
 }
 
-void	launch_philo(t_env *env)
+int	launch_philo(t_env *env)
 {
 	struct timeval	now;
 	int				i;
@@ -91,10 +90,14 @@ void	launch_philo(t_env *env)
 		tmp = env->philo[i].self;
 		r = pthread_create(&env->philo[i].thread, NULL, philo_routine, tmp);
 		if (r != 0)
+		{
 			abort_philo(env, i);
+			return (-1);
+		}
 		usleep(20);
 		i++;
 	}
+	return (0);
 }
 
 int	get_env(int ac, char **av, t_env *env)
@@ -103,11 +106,9 @@ int	get_env(int ac, char **av, t_env *env)
 	env->time2die = ft_atoi(av[2]);
 	env->time2eat = ft_atoi(av[3]);
 	env->time2sleep = ft_atoi(av[4]);
-	if (env->time2die < 0 || env->time2eat < 0)
+	if (env->time2die < 0 || env->time2eat < 0 || env->philo_amount < 0)
 		return (-1);
-	if (env->time2sleep < 0 || env->philo_amount < 0)
-		return (-1);
-	if (env->philo_amount > 1000)
+	if (env->time2sleep < 0 || env->philo_amount > 1000)
 		return (-1);
 	env->gen = -1;
 	if (ac >= 6)
@@ -124,6 +125,7 @@ int	get_env(int ac, char **av, t_env *env)
 	}
 	pthread_mutex_init(&env->print_mutex, NULL);
 	pthread_mutex_init(&env->state_mutex, NULL);
+	pthread_mutex_init(&env->take_fork, NULL);
 	prepare_philo(env);
 	return (0);
 }

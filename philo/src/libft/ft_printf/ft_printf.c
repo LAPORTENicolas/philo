@@ -55,14 +55,14 @@ int	ft_parse(const char *format, unsigned int len, va_list args)
 	return (size);
 }
 
-unsigned int  get_amount_write(const char *str)
+unsigned int	get_amount_write(const char *str)
 {
-  unsigned int i;
+	unsigned int	i;
 
-  i = 0;
-  while (str[i] && str[i] != '%')
-    i++;
-  return (i);
+	i = 0;
+	while (str[i] && str[i] != '%')
+		i++;
+	return (i);
 }
 
 int	ft_printf(const char *format, ...)
@@ -80,16 +80,16 @@ int	ft_printf(const char *format, ...)
 	while (len < lenmax)
 	{
 		if (format[len] != '%')
-    {
-      size += get_amount_write(&format[len]);
-      write(1, &format[len], get_amount_write(&format[len]));
-      len += get_amount_write(&format[len]);
-    }
+		{
+			size += get_amount_write(&format[len]);
+			write(1, &format[len], get_amount_write(&format[len]));
+			len += get_amount_write(&format[len]);
+		}
 		else
-    {
+		{
 			size += ft_parse(format, ++len, args);
-      len++;
-    }
+			len++;
+		}
 	}
 	return (size);
 }

@@ -39,7 +39,8 @@ int	main(int ac, char **av)
 		return (-1);
 	if (get_env(ac, av, &env) == -1)
 		return (-1);
-	launch_philo(&env);
+	if (launch_philo(&env) == -1)
+		return (-1);
 	free_env(&env);
 	return (0);
 }
